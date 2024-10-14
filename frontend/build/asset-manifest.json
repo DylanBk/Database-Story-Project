@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.e567e035.css",
+    "main.js": "/static/js/main.2f3d14c7.js",
+    "static/media/hero-banner.webp": "/static/media/hero-banner.bb0040d9b4511f621c19.webp",
+    "static/media/OpenSans-VariableFont_wdth,wght.ttf": "/static/media/OpenSans-VariableFont_wdth,wght.19ba637387f1d6142f55.ttf",
+    "static/media/Poppins-Regular.ttf": "/static/media/Poppins-Regular.35d26b781dc5fda684cc.ttf",
+    "index.html": "/index.html",
+    "main.e567e035.css.map": "/static/css/main.e567e035.css.map",
+    "main.2f3d14c7.js.map": "/static/js/main.2f3d14c7.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e567e035.css",
+    "static/js/main.2f3d14c7.js"
+  ]
+}
