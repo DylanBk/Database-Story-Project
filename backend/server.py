@@ -11,6 +11,9 @@ db_path = './instance/db.db'
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve_react_app(path):
+    ip_address = request.remote_addr
+    print(f"IP Address: {ip_address}")
+
     if path != "" and os.path.exists(app.static_folder + '/' + path):
         return send_from_directory(app.static_folder, path)
     else:
@@ -22,16 +25,15 @@ def get_data():
 
 
 @app.route('/signup', methods=['GET', 'POST'])
-@app.route('/signup', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def signup():
-    pass
-
+    return jsonify({"message": "signup page"})
 
 # --- MAIN ---
 
 db.create_db()
-with db.connect(db_path) as conn:
-    db.default_admin(conn)
+# with db.connect(db_path) as conn:
+#     db.default_admin(conn)
 
 
 if __name__ == "__main__":

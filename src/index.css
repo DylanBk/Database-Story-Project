@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --lightBlue: #64adc4;
+  --medBlue: #4887b7;
+  --darkBlue: #376096;
+  --darkMint: #36826f;
+  --midMint: #62ad99;
+  --mint: #8fdbc5;
+  --peach: #f8d4b4;
+  --coral: #ff6f61;
+}
+
+
+/* FONTS */
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('./fonts/Poppins-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('./fonts/OpenSans-VariableFont_wdth\,wght.ttf');
+}
+
+.font-poppins {
+  font-family: 'Poppins';
+}
+
+.font-open-sans {
+  font-family: 'Open Sans';
+}
+
+/* MISC */
+
+.smooth-transition {
+  transition: all 0.5s linear;
+}
+
+
+/* BASIC */
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code { /* for the react error appearance */
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+/* BUTTONS */
+
+.primary-btn {
+  background-color: var(--medBlue);
+  color: white;
+  text-align: center;
+}
+.primary-btn:hover {
+  background-color: var(--darkBlue);
+}
+
+.secondary-btn {
+  background-color: rgb(red, green, blue, 0);
+  border: 2px var(--medBlue) solid;
+  text-align: center;
+}
+.secondary-btn:hover {
+  border-color: var(--darkBlue);
+  background-color: var(--darkBlue);
+  color: white;
+}
+
+.tertiary-btn {
+  background-color: var(--mint);
+  border: 2px var(--mint) solid;
+  text-align: center;
+}
+.tertiary-btn:hover {
+  background-color: rgb(red, green, blue, 0);
+  color: black;
+}
+
+
+/* LINKS */
+
+.primary-link {
+  color: black;
+  transition: all 0.15s
+}
+.primary-link:hover {
+  color: var(--darkBlue);
+}
+
+.secondary-link {
+  width: fit-content; /* stops links showing :hover style when cursor isn't even on link */
+  color: #393939;
+}
+.secondary-link:hover {
+  color: black;
+  text-decoration-line: underline;
+}

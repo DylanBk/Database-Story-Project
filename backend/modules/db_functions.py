@@ -21,10 +21,11 @@ def create_db():
         print("f keys enabled")
 
         create_table(conn, "courses", ["id", "name", "teacher"], ["INTEGER PRIMARY KEY AUTOINCREMENT", "TEXT", "INTEGER REFERENCES staff(id)"])
-        create_table(conn, "staff", ["id", "email", "password", "name", "gender", "attendance", "role", "course"], ["INTEGER PRIMARY KEY AUTOINCREMENT", "TEXT UNIQUE", "TEXT", "TEXT", "TEXT", "REAL", "TEXT DEFAULT 'User", "INTEGER REFERENCES courses(id)"])
-        create_table(conn, "students", ["id, email, name, password, year, gender, age, attendance, role", "course", "primary_parent"], ["INTEGER PRIMARY KEY AUTOINCREMENT", "TEXT UNIQUE", "TEXT", "INTEGER", "TEXT", "INTEGER", "REAL", "TEXT DEFAULT 'User", "INTEGER REFERENCES courses(id)", "INTEGER REFERENCES parents(id)"])
-        create_table(conn, "parents", ["id", "email", "password", "name", "role", "student"], ["INTEGER PRIMARY KEY AUTOINCREMENT", "TEXT UNIQUE", "TEXT", "TEXT", "TEXT DEFAULT 'User", "INTEGER REFERENCES (students(id))"])
+        create_table(conn, "staff", ["id", "email", "password", "name", "gender", "attendance", "role", "course"], ["INTEGER PRIMARY KEY AUTOINCREMENT", "TEXT UNIQUE", "TEXT", "TEXT", "TEXT", "REAL", "TEXT DEFAULT 'User'", "INTEGER REFERENCES courses(id)"])
+        create_table(conn, "students", ["id, email, name, password, year, gender, age, attendance, role", "course", "primary_parent"], ["INTEGER PRIMARY KEY AUTOINCREMENT", "TEXT UNIQUE", "TEXT", "INTEGER", "TEXT", "INTEGER", "REAL", "TEXT DEFAULT 'User'", "INTEGER REFERENCES courses(id)", "INTEGER REFERENCES parents(id)"])
+        create_table(conn, "parents", ["id", "email", "password", "name", "role", "student"], ["INTEGER PRIMARY KEY AUTOINCREMENT", "TEXT UNIQUE", "TEXT", "TEXT", "TEXT DEFAULT 'User'", "INTEGER REFERENCES students(id)"])
         create_table(conn, "events", ["id", "name", "description", "datetime", "price"], ["INTEGER PRIMARY KEY AUTOINCREMENT", "TEXT", "TEXT", "TEXT", "REAL"])
+        create_table(conn, "exam_results", ["id", "name", "score", "num_questions_correct", "num_questions_incorrect", "student"], ["INTEGER PRIMARY KEY AUTOINCREMENT", "TEXT", "REAL", "INTEGER", "INTEGER", "INTEGER REFERENCES students(id)"])
 
         print("Tables Created Successfully")
 
@@ -52,6 +53,7 @@ def create_table(conn, table_name, col_vals, col_types):
         cols_and_types.append(temp)
 
     query = f"CREATE TABLE IF NOT EXISTS {table_name} ({(', '.join(cols_and_types))})"
+    print(query)
     c.execute(query)
     conn.commit()
 
