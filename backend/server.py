@@ -1,9 +1,9 @@
-from flask import Flask, jsonify, request, send_from_directory
-from flask_cors import CORS
-import os
+from modules import *
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+
+db_path = './instance/db.db'
 
 
 # -- ROUTES ---
@@ -28,6 +28,11 @@ def signup():
 
 
 # --- MAIN ---
+
+db.create_db()
+with db.connect(db_path) as conn:
+    db.default_admin(conn)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
