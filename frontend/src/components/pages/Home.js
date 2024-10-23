@@ -10,7 +10,7 @@ const hero_banner = require('../../media/images/hero-banner.webp');
 
 export default function Home() {
     const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
+    // const [loading, setLoading] = useState(true);
 
 
 
@@ -55,7 +55,6 @@ export default function Home() {
                 </div>
             </div>
             <UpcomingEvents />
-            {data ? <p className='h-10 w-full bg-green-200'>{data.message}</p> : <p className='h-10 w-full bg-red-200'>Loading data...</p>}
             <Footer />
         </div>
     )

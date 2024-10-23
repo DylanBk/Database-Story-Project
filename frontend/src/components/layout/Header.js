@@ -48,7 +48,6 @@ export default function Header() {
                 </form>
                 {isWideScreen ? (
                     <div>
-
                         <nav className="h-10 absolute bottom-4 right-28 xl:right-36 flex items-center md:gap-2 lg:gap-4 text-sm md:text-base smooth-transition">
                             <Link
                                 className="primary-link"

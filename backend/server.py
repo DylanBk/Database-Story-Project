@@ -1,40 +1,46 @@
 from modules import *
 
-app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+app = Flask(__name__, static_folder='../frontend/build', static_url_path='')
+CORS(app)
 
-db_path = './instance/db.db'
-
+db_path = "./instance/db.db"
 
 # -- ROUTES ---
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve_react_app(path):
-    ip_address = request.remote_addr
-    print(f"IP Address: {ip_address}")
+@app.route('/')
+def index():
+    return send_from_directory(app.static_folder, 'index.html')
 
-    if path != "" and os.path.exists(app.static_folder + '/' + path):
-        return send_from_directory(app.static_folder, path)
-    else:
-        return send_from_directory(app.static_folder, 'index.html')
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if session:
+        print("already logged in")
+        return
+    if request.method == 'POST':
+        data = request.get_json()
+        email = data['email']
+        name = data['full-name']
+        enc_pw = data['hidden-pw']
 
+        enc_pw_bytes = base64.b64decode(enc_pw)
+        iv = enc_pw_bytes[:16]
+        real_enc_pw = enc_pw_bytes[16:]
+        print(f"iv: {iv}")
+        print(f"enc pw: {real_enc_pw}")
+
+        with db.connect(db_path) as conn:
+            db.create_user(conn, [email, real_enc_pw, name])
+
+
+# ! TESTING
 @app.route('/api/data', methods=['GET'])
 def get_data():
     return jsonify({"message": "some data"})
 
 
-@app.route('/signup', methods=['GET', 'POST'])
-@app.route('/login', methods=['GET', 'POST'])
-def signup():
-    return jsonify({"message": "signup page"})
+
 
 # --- MAIN ---
-
-db.create_db()
-# with db.connect(db_path) as conn:
-#     db.default_admin(conn)
-
 
 if __name__ == "__main__":
     app.run(debug=True)
