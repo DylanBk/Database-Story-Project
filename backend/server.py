@@ -11,36 +11,53 @@ db_path = "./instance/db.db"
 def index():
     return send_from_directory(app.static_folder, 'index.html')
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
     if session:
         print("already logged in")
-        return
+        return jsonify({"error": "already signed in"}, 400)
     if request.method == 'POST':
         data = request.get_json()
         email = data['email']
         name = data['full-name']
-        enc_pw = data['hidden-pw']
-
-        enc_pw_bytes = base64.b64decode(enc_pw)
-        iv = enc_pw_bytes[:16]
-        real_enc_pw = enc_pw_bytes[16:]
-        print(f"iv: {iv}")
-        print(f"enc pw: {real_enc_pw}")
+        pw = data['hidden-pw']
 
         with db.connect(db_path) as conn:
-            db.create_user(conn, [email, real_enc_pw, name])
+            db.create_user(conn, [email, pw, name])
 
+        return jsonify({"message": "user created successfully"}), 200
+    return send_from_directory(app.static_folder, 'index.html')
 
-# ! TESTING
-@app.route('/api/data', methods=['GET'])
-def get_data():
-    return jsonify({"message": "some data"})
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if session:
+        return jsonify({"error": "already signed in"}), 400
+    if request.method == 'POST':
+        data = request.get_json()
+    
+        with db.connect(db_path) as conn:
+            check = db.user_exists(conn, data[0])
+        
+            if check:
+                user = db.get_user_by_email(conn, data[0])
+                if db.check_pw(conn, user[0], data[1]):
+                    print("correct pw")
+                    session['user_id'] = user[0]
+                    session['email'] = user[1]
+                    session['name'] = user[3]
+                    session['role'] = user[4]
 
-
+                return jsonify({"message": "signed in successfully"}), 200
+            return jsonify({"error": "user does not exist"}), 400
+    return send_from_directory(app.static_folder, 'index.html')
 
 
 # --- MAIN ---
+
+db.create_db()
+
+with db.connect(db_path) as conn:
+    db.default_admin(conn)
 
 if __name__ == "__main__":
     app.run(debug=True)

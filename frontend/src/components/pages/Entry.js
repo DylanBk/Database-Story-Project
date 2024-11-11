@@ -1,28 +1,21 @@
-import axios from 'axios';
 import React, { useEffect, useState } from "react";
 
 import Header from '../layout/Header';
-import AuthSection from '../layout/AuthSection';
+import RegisterForm from '../layout/Register';
+import LoginForm from "../layout/Login";
 import Footer from '../layout/Footer';
 
 export default function Entry() {
-    const [data, setData] = useState(null);
-
-    useEffect(() => {
-        axios.get('http://localhost:5000/signup')
-            .then((response) => {
-                setData(response.data);
-            })
-            .catch((error) => {
-                console.error(`Error: ${error}`);
-            });
-    }, []);
 
     return (
-        <div>
+        <div className="bg-gradient-to-br from-medBlue to-mint">
             <Header />
-            {data ? <p className='h-10 w-full bg-green-200'>{data.message}</p> : <p className='h-10 w-full bg-red-200'>Loading data...</p>}
-            <AuthSection />
+            <div
+                id="auth-form-wrapper"
+                className="h-96 relative mt-28 sm:mt-32">
+                <RegisterForm />
+                <LoginForm />
+            </div>
             <Footer />
         </div>
     )

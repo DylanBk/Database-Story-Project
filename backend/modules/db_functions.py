@@ -1,3 +1,4 @@
+import bcrypt
 import sqlite3
 import os
 
@@ -28,9 +29,9 @@ def create_db():
         print("connected to database")
         conn.execute("PRAGMA foreign_keys = ON")
         print("foreign keys enabled")
-        create_table(conn, "staff", ["id", "email", "password", "name", "gender", "attendance", "role", "course"], ["INTEGER PRIMARY KEY AUTOINCREMENT", "TEXT UNIQUE", "TEXT", "TEXT", "TEXT", "REAL", "TEXT DEFAULT 'User'", "INTEGER REFERENCES courses(id)"])
-        create_table(conn, "parents", ["id", "email", "password", "name", "gender", "role", "child"], ["INTEGER PRIMARY KEY AUTOINCREMENT", "TEXT UNIQUE", "TEXT", "TEXT", "TEXT", "TEXT DEFAULT 'User'", "INTEGER REFERENCES students(id)"])
-        create_table(conn, "students", ["id", "email", "password", "name", "year", "gender", "age", "attendance", "role", "course", "primary_guardian"], ["INTEGER PRIMARY KEY AUTOINCREMENT", "TEXT UNIQUE", "TEXT", "TEXT", "TEXT", "TEXT", "INTEGER", "REAL", "TEXT DEFAULT 'User'", "INTEGER REFERENCES courses(id)", "INTEGER REFERENCES parents(id)"])
+        create_table(conn, "staff", ["id", "email", "password", "name", "role", "gender", "attendance", "course"], ["INTEGER PRIMARY KEY AUTOINCREMENT", "TEXT UNIQUE", "TEXT", "TEXT", "TEXT DEFAULT 'User'", "REAL", "TEXT", "INTEGER REFERENCES courses(id)"])
+        create_table(conn, "parents", ["id", "email", "password", "name", "role", "gender", "child"], ["INTEGER PRIMARY KEY AUTOINCREMENT", "TEXT UNIQUE", "TEXT", "TEXT", "TEXT DEFAULT 'User'", "TEXT", "INTEGER REFERENCES students(id)"])
+        create_table(conn, "students", ["id", "email", "password", "name", "role", "year", "gender", "age", "attendance", "course", "primary_guardian"], ["INTEGER PRIMARY KEY AUTOINCREMENT", "TEXT UNIQUE", "TEXT", "TEXT", "TEXT DEFAULT 'User'", "TEXT", "TEXT", "INTEGER", "REAL", "INTEGER REFERENCES courses(id)", "INTEGER REFERENCES parents(id)"])
         create_table(conn, "courses", ["id", "name", "teacher"], ["INTEGER PRIMARY KEY AUTOINCREMENT", "TEXT", "INTEGER REFERENCES staff(id)"])
         create_table(conn, "events", ["name", "description", "datetime", "price"], ["TEXT", "TEXT", "TEXT", "REAL"])
         print("tables added")
@@ -116,26 +117,26 @@ def remove_data(conn, table_name, id):
     return c.rowcount
 
 
-# ! -----------------------------------------------------
-# ! REPLACE BCYRPT LOGIC WITH CRYPTOJS
-# ! -----------------------------------------------------
 # --- USER FUNCTIONS ---
 
 def create_user(conn, data):
+    print(data[2])
+    data[2] = gen_pw(data[2])
+    print(data[2])
     add_data(conn, "users", ['email', 'username', 'password'], data)
 
-# def read_user(conn, cols, id):
-#     data = read_data(conn, "users", cols, id)
-#     return data
+def read_user(conn, cols, id):
+    data = read_data(conn, "users", cols, id)
+    return data
 
-# def edit_user(conn, col, val, id):
-#     if col == "password":
-#         val = gen_pw(conn, val)
+def edit_user(conn, col, val, id):
+    if col == "password":
+        val = gen_pw(conn, val)
 
-#     edit_data(conn, "users", col, val, id)
+    edit_data(conn, "users", col, val, id)
 
-# def remove_user(conn, id):
-#     remove_data(conn, "users", id)
+def remove_user(conn, id):
+    remove_data(conn, "users", id)
 
 # --- EVENT FUNCTIONS ---
 
@@ -143,20 +144,20 @@ def create_user(conn, data):
 
 # --- AUTH & CHECK FUNCTIONS ---
 
-# def gen_pw(pw):
-#     bytes = pw.encode('utf-8')
-#     salt = bcrypt.gensalt(10)
-#     hash_pw = bcrypt.hashpw(bytes, salt)
+def gen_pw(pw):
+    bytes = pw.encode('utf-8')
+    salt = bcrypt.gensalt(10)
+    hash_pw = bcrypt.hashpw(bytes, salt)
 
-#     return hash_pw
+    return hash_pw
 
-# def check_pw(conn, id, user_pw):
-#     hash_pw = read_user(conn, "password", id)
+def check_pw(conn, id, user_pw):
+    hash_pw = read_user(conn, "password", id)
 
-#     bytes = user_pw.encode('utf-8')
-#     res = bcrypt.checkpw(bytes, hash_pw)
+    bytes = user_pw.encode('utf-8')
+    res = bcrypt.checkpw(bytes, hash_pw)
 
-#     return res
+    return res
 
 def user_exists(conn, email):
     c = conn.cursor()
@@ -175,8 +176,9 @@ def get_user_by_email(conn, email):
     return c.fetchone
 
 
+
 # ! --- TESTING ---
 
 def default_admin(conn):
-    add_data(conn, "users", ['email', 'password', 'name', 'role'], ['admin@domain.com', 'admin', 'College Admin', 'Admin'])
+    add_data(conn, "staff", ['email', 'password', 'name', 'role'], ['admin@domain.com', 'admin', 'College Admin', 'Admin'])
     print('default admin account created')
