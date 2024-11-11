@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Footer() {
+    const [isFooterAbsolute, setIsFooterAbsolute] = useState(false)
+
+    useEffect(() => {
+        if (window.location.href.includes('login')) {
+            setIsFooterAbsolute(true)
+        }
+    }, []);
+
+    if (isFooterAbsolute) {
+        document.getElementById('footer').style.position = 'absolute';
+        document.getElementById('footer').style.bottom = 0;
+    }
+
     return (
         <div
             id="footer"
-            className="h-auto w-full flex flex-row gap-10 p-5 pb-14 bg-gray-300">
+            className="h-auto w-full flex flex-row gap-10 p-5 pb-14 bg-gray-300 smooth-transition">
                 <div
                     id="footer-generic-links"
                     className="w-full flex flex-row justify-around">

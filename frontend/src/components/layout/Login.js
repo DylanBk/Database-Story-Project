@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-const secret_key = process.env.REACT_APP_SECRET_KEY;
-
 export default function LoginForm() {
     const [formData, setFormData] = useState({
         email: '',
@@ -20,7 +18,7 @@ export default function LoginForm() {
     const handleSubmit = async (e) => {
         e.preventDefaults();
 
-        const response = await fetch('/login', {
+        const response = await fetch('/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -29,40 +27,38 @@ export default function LoginForm() {
         });
 
         if (response.ok) {
-            console.log("login successful");
+            console.log("Sign In successful")
         } else {
-            const err = await response.json();
-            console.error(err.error);
-        };
+            console.error("Sign In failed")
+        }
     };
 
     return (
-        <div className="h-96 w-2/3 xl:w-2/5 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 py-4 sm:py-8 mx-auto bg-midBlue smooth-transition border border-green-500 bg-blue-200 invisible">
+        <div
+            id="login-container"
+            className="h-96 w-2/3 xl:w-2/5 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 py-4 sm:py-8 rounded-md rounded-tr-none mx-auto bg-white bg-opacity-10 transition-transform duration-500">
             <form
                 id="login-form"
-                className="flex flex-col gap-4 xl:gap-6 2xl:gap-10 items-center">
-                <div>
-                    <label>Email:</label>
-                    <input
-                        className="w-3/4 xl:w-2/3 p-2 rounded-md smooth-transition"
-                        name="email"
-                        type="email"
-                        placeholder="email@domain.com"
-                        onChange={handleChange}
-                        required>
-                    </input>
-                </div>
-                <label>Password:</label>
+                className="w-3/4 xl:w-2/3 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-4 xl:gap-6 2xl:gap-10 items-center justify-center mt-10">
+                <input
+                    className="w-full p-2 rounded-md transition-transform duration-500"
+                    name="email"
+                    type="email"
+                    placeholder="Email"
+                    onChange={handleChange}
+                    required>
+                </input>
                 <input
                     id='login-pw'
-                    className="w-3/4 p-2 xl:w-2/3 rounded-md smooth-transition"
+                    className="w-full p-2 rounded-md transition-transform duration-500"
                     name="password"
                     type="password"
+                    placeholder="Password"
                     onChange={handleChange}
                     required>
                 </input>
                 <button
-                    className="bg-green-50"
+                    className="h-fit w-fit self-center px-4 py-2 rounded-md primary-btn transition-colors duration-200"
                     type='submit'
                     onSubmit={handleSubmit}>
                     Sign In

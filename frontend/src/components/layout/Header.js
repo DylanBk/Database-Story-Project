@@ -22,7 +22,7 @@ export default function Header() {
     return (
         <div
             id="header"
-            className="h-28 sm:h-32 w-full relative flex flex-col bg-white   shadow-lg shadow-gray-400 smooth-transition">
+            className="h-28 sm:h-32 w-full relative flex flex-col bg-white shadow-lg shadow-gray-400 smooth-transition">
                 <Link
                     className="absolute left-1/2 top-2 text-2xl sm:text-3xl lg:text-5xl font-poppins select-none -translate-x-1/2"
                     to='/'>

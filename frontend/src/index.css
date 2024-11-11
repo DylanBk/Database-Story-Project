@@ -62,36 +62,49 @@ code { /* for the react error appearance */
     monospace;
 }
 
+input,
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #f3f4f6 inset;
+}
+
+.auth-input {
+  box-shadow: rgb();
+  -webkit-box-shadow: 0 0 0 30px rgb(0, 0, 0, 0.5) inset;
+  color: white;
+}
 
 /* BUTTONS */
 
 .primary-btn {
-  background-color: var(--medBlue);
+  background: var(--medBlue);
   color: white;
   text-align: center;
 }
 .primary-btn:hover {
-  background-color: var(--darkBlue);
+  background: var(--darkBlue);
 }
 
 .secondary-btn {
-  background-color: rgb(red, green, blue, 0);
+  background: rgb(red, green, blue, 0);
   border: 2px var(--medBlue) solid;
   text-align: center;
 }
 .secondary-btn:hover {
-  border-color: var(--darkBlue);
-  background-color: var(--darkBlue);
+  border: var(--darkBlue);
+  background: var(--darkBlue);
   color: white;
 }
 
 .tertiary-btn {
-  background-color: var(--mint);
+  background: var(--mint);
   border: 2px var(--mint) solid;
   text-align: center;
 }
 .tertiary-btn:hover {
-  background-color: rgb(red, green, blue, 0);
+  background: rgb(red, green, blue, 0);
   color: black;
 }
 

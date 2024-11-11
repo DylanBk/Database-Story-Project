@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -9,21 +8,6 @@ import Footer from "../layout/Footer";
 const hero_banner = require('../../media/images/hero-banner.webp');
 
 export default function Home() {
-    const [data, setData] = useState(null);
-    // const [loading, setLoading] = useState(true);
-
-
-
-    useEffect(() => {
-        axios.get('http://localhost:5000/')
-            .then((response) => {
-                setData(response.data);
-            })
-            .catch((error) => {
-                console.error(`Error: ${error}`);
-            });
-    }, []);
-
     return (
         <div>
             <Header />
