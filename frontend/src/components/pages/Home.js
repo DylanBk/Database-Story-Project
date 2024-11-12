@@ -27,12 +27,12 @@ export default function Home() {
                     id="hero-banner-btn-container"
                     className="absolute left-1/2 flex flex-row gap-5 mt-52 -translate-x-1/2">
                     <Link
-                        className="px-4 py-2 rounded-full bg-black bg-opacity-30 text-white transition-colors duration-300 secondary-btn"
+                        className="px-4 py-2 rounded-full secondary-btn"
                         to="/">
                         <p className="opacity-100">Explore Courses</p>
                     </Link>
                     <Link
-                        className="px-4 py-2 rounded-full hover:bg-black hover:bg-opacity-30 hover:text-white transition-colors duration-300 tertiary-btn"
+                        className="px-4 py-2 rounded-full tertiary-btn"
                         to="/">
                         Apply Now
                     </Link>

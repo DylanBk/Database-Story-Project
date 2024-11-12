@@ -41,7 +41,7 @@ export default function LoginForm() {
                 id="login-form"
                 className="w-3/4 xl:w-2/3 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-4 xl:gap-6 2xl:gap-10 items-center justify-center mt-10">
                 <input
-                    className="w-full p-2 rounded-md transition-transform duration-500"
+                    className="w-full p-2 rounded-md transition-transform duration-500 auth-input"
                     name="email"
                     type="email"
                     placeholder="Email"
@@ -49,8 +49,7 @@ export default function LoginForm() {
                     required>
                 </input>
                 <input
-                    id='login-pw'
-                    className="w-full p-2 rounded-md transition-transform duration-500"
+                    className="w-full p-2 rounded-md transition-transform duration-500 auth-input"
                     name="password"
                     type="password"
                     placeholder="Password"
@@ -58,7 +57,7 @@ export default function LoginForm() {
                     required>
                 </input>
                 <button
-                    className="h-fit w-fit self-center px-4 py-2 rounded-md primary-btn transition-colors duration-200"
+                    className="h-fit w-1/2 self-center px-4 py-2 rounded-md hover:w-full focus:w-3/4 primary-btn transition-colors duration-200"
                     type='submit'
                     onSubmit={handleSubmit}>
                     Sign In

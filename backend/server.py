@@ -19,11 +19,12 @@ def signup():
     if request.method == 'POST':
         data = request.get_json()
         email = data['email']
-        name = data['full-name']
-        pw = data['hidden-pw']
+        name = data['full_name']
+        pw = data['pw']
 
         with db.connect(db_path) as conn:
             db.create_user(conn, [email, pw, name])
+            print("user created")
 
         return jsonify({"message": "user created successfully"}), 200
     return send_from_directory(app.static_folder, 'index.html')

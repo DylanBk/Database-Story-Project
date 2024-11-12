@@ -62,18 +62,22 @@ code { /* for the react error appearance */
     monospace;
 }
 
+/* INPUTS */
+
 input,
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px #f3f4f6 inset;
+  transition: background-color 5000000s ease-in-out 0s; /* removes chrome autofill background */
 }
 
 .auth-input {
-  box-shadow: rgb();
-  -webkit-box-shadow: 0 0 0 30px rgb(0, 0, 0, 0.5) inset;
-  color: white;
+  background: rgb(255, 255, 255, 0.4);
+  color: black;
+}
+.auth-input::placeholder {
+  color: #727272;
 }
 
 /* BUTTONS */
@@ -82,30 +86,44 @@ input:-webkit-autofill:active {
   background: var(--medBlue);
   color: white;
   text-align: center;
+  transition: all 0.3s ease;
 }
 .primary-btn:hover {
   background: var(--darkBlue);
 }
+.primary-btn:focus {
+  background: var(--darkBlue);
+}
 
 .secondary-btn {
-  background: rgb(red, green, blue, 0);
   border: 2px var(--medBlue) solid;
+  background: rgb(0, 0, 0, 0.4);
+  color: white;
   text-align: center;
+  transition: all 0.3s ease;
 }
 .secondary-btn:hover {
-  border: var(--darkBlue);
+  border: 2px var(--darkBlue) solid;
   background: var(--darkBlue);
-  color: white;
+}
+.secondary-btn:focus {
+  border: 2px var(--darkBlue) solid;
+  background: var(--darkBlue);
 }
 
 .tertiary-btn {
   background: var(--mint);
   border: 2px var(--mint) solid;
   text-align: center;
+  transition: all 0.3s ease;
 }
 .tertiary-btn:hover {
-  background: rgb(red, green, blue, 0);
-  color: black;
+  background: rgb(0, 0, 0, 0.4);
+  color: white;
+}
+.tertiary-btn:focus {
+  background: rgb(0, 0, 0, 0.4) !important;
+  color: white;
 }
 
 
@@ -118,6 +136,12 @@ input:-webkit-autofill:active {
 .primary-link:hover {
   color: var(--darkBlue);
 }
+.primary-link:focus {
+  color: var(--darkBlue);
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  outline: none;
+}
 
 .secondary-link {
   width: fit-content; /* stops links showing :hover style when cursor isn't even on link */
@@ -126,4 +150,9 @@ input:-webkit-autofill:active {
 .secondary-link:hover {
   color: black;
   text-decoration-line: underline;
+}
+.secondary-link:focus {
+  color: black;
+  text-decoration-line: underline;
+  outline: none;
 }

@@ -6,6 +6,7 @@ const burger_menu_white = require('../../media/icons/burger-menu-white.png');
 const spyglass = require('../../media/icons/spyglass.png');
 
 export default function Header() {
+    const [isAuthPage, setIsAuthPage] = useState(false)
     const [isWideScreen, setIsWideScreen] = useState(window.screen.width > 768);
 
     const handleResize = () => {
@@ -13,11 +14,20 @@ export default function Header() {
     };
 
     useEffect(() => {
+        if (window.location.href.includes('login') || window.location.href.includes('signup')) {
+            setIsAuthPage(true)
+        }
         window.addEventListener('resize', handleResize);
         return () => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
+
+    if (isAuthPage || document.getElementById('login-btn')) {
+        document.getElementById('login-btn').style.transition = 'none';
+        document.getElementById('login-btn').style.visibility = 'hidden';
+        document.getElementById('nav').style.right = '4rem';
+    }
 
     return (
         <div
@@ -48,7 +58,9 @@ export default function Header() {
                 </form>
                 {isWideScreen ? (
                     <div>
-                        <nav className="h-10 absolute bottom-4 right-28 xl:right-36 flex items-center md:gap-2 lg:gap-4 text-sm md:text-base smooth-transition">
+                        <nav
+                            id="nav"
+                            className="h-10 absolute bottom-4 right-28 xl:right-36 flex items-center md:gap-2 lg:gap-4 text-sm md:text-base smooth-transition">
                             <Link
                                 className="primary-link"
                                 to="/">About</Link>
@@ -78,8 +90,9 @@ export default function Header() {
                     </button>
                 )} 
                 <Link
-                    to="/login"
-                    className="h-10 absolute right-4 bottom-4 px-2 py-1 sm:px-4 sm:py-2 rounded-md transition-colors duration-300 primary-btn">
+                    id="login-btn"
+                    className="h-10 absolute right-4 bottom-4 px-2 py-1 sm:px-4 sm:py-2 rounded-md primary-btn"
+                    to="/login">
                         Login
                     </Link>
         </div>

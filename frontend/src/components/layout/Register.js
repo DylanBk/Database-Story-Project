@@ -3,8 +3,8 @@ import React, { useState } from "react";
 export default function RegisterForm() {
     const [formData, setFormData] = useState({
         email: '',
-        name: '',
-        password: ''
+        full_name: '',
+        pw: ''
     });
 
     const handleChange = (e) => {
@@ -14,30 +14,37 @@ export default function RegisterForm() {
             ...formData,
             [name]: val
         });
+        console.log(`formData: ${formData.email}, ${formData.email}, ${formData.pw}`)
     };
 
     const handleSubmit = async (e) => {
         e.preventDefaults();
+        console.log(`form data: ${formData}`)
 
-        const response = await fetch('/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        });
+        try {
+            const response = await fetch('/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
 
-        if (response.ok) {
-            console.log("sign up successful")
-        } else {
-            console.error("sign up failed")
+            if (response.ok) {
+                console.log("sign up successful")
+            } else {
+                console.error("sign up failed")
+            }
+        } catch (error) {
+            console.error(error)
         }
     };
 
     return (
         <div
             id="reg-container"
-            className="h-96 w-2/3 xl:w-2/5 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 py-4 sm:py-8 rounded-lg rounded-tl-none mx-auto bg-white bg-opacity-10 invisible transition-transform duration-500">
+            className="h-96 w-2/3 xl:w-2/5 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 py-4 sm:py-8 rounded-lg rounded-tl-none mx-auto bg-white bg-opacity-10 invisible transition-transform duration-500"
+            onSubmit={handleSubmit}>
             <form
                 id="register-form"
                 className="w-3/4 xl:w-2/3 absolute left-1/2 top-1/2 flex flex-col gap-4 xl:gap-6 2xl:gap-10 items-center justify-center -translate-x-1/2 -translate-y-1/2 invisible">
@@ -51,14 +58,13 @@ export default function RegisterForm() {
                 </input>
                 <input
                     name="full-name"
-                    className="w-full p-2 rounded-md transition-transform duration-500 bg-red-400"
+                    className="w-full p-2 rounded-md transition-transform duration-500 auth-input"
                     placeholder="Full Name"
                     onChange={handleChange}
                     required>
                 </input>
                 <input
-                    id='reg-pw'
-                    className="w-full p-2 rounded-md transition-transform duration-500"
+                    className="w-full p-2 rounded-md transition-transform duration-500 auth-input"
                     name="password"
                     type="password"
                     placeholder="Password"
@@ -66,9 +72,8 @@ export default function RegisterForm() {
                     required>
                 </input>
                 <button
-                    className="h-fit w-full self-center px-4 py-2 rounded-sm primary-btn transition-colors duration-200"
-                    type='submit'
-                    onSubmit={handleSubmit}>
+                    className="h-fit w-1/2 self-center px-4 py-2 rounded-sm hover:w-3/4 focus:w-3/4 primary-btn transition-colors duration-200"
+                    type='submit'>
                     Sign Up
                 </button>
             </form>

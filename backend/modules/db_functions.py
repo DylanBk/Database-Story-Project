@@ -29,6 +29,7 @@ def create_db():
         print("connected to database")
         conn.execute("PRAGMA foreign_keys = ON")
         print("foreign keys enabled")
+        create_table(conn, "unvalidated_users", ["id", "email", "password", "name", "role"], ["INTEGER PRIMARY KEY AUTOINCREMENT", "TEXT UNIQUE", "TEXT", "TEXT", "TEXT DEFAULT 'User'"])
         create_table(conn, "staff", ["id", "email", "password", "name", "role", "gender", "attendance", "course"], ["INTEGER PRIMARY KEY AUTOINCREMENT", "TEXT UNIQUE", "TEXT", "TEXT", "TEXT DEFAULT 'User'", "REAL", "TEXT", "INTEGER REFERENCES courses(id)"])
         create_table(conn, "parents", ["id", "email", "password", "name", "role", "gender", "child"], ["INTEGER PRIMARY KEY AUTOINCREMENT", "TEXT UNIQUE", "TEXT", "TEXT", "TEXT DEFAULT 'User'", "TEXT", "INTEGER REFERENCES students(id)"])
         create_table(conn, "students", ["id", "email", "password", "name", "role", "year", "gender", "age", "attendance", "course", "primary_guardian"], ["INTEGER PRIMARY KEY AUTOINCREMENT", "TEXT UNIQUE", "TEXT", "TEXT", "TEXT DEFAULT 'User'", "TEXT", "TEXT", "INTEGER", "REAL", "INTEGER REFERENCES courses(id)", "INTEGER REFERENCES parents(id)"])
@@ -123,20 +124,20 @@ def create_user(conn, data):
     print(data[2])
     data[2] = gen_pw(data[2])
     print(data[2])
-    add_data(conn, "users", ['email', 'username', 'password'], data)
+    add_data(conn, "unvalidated_users", ['email', 'username', 'password'], data)
 
-def read_user(conn, cols, id):
-    data = read_data(conn, "users", cols, id)
+def read_user(conn, table_name, cols, id):
+    data = read_data(conn, table_name, cols, id)
     return data
 
-def edit_user(conn, col, val, id):
+def edit_user(conn, table_name, col, val, id):
     if col == "password":
         val = gen_pw(conn, val)
 
-    edit_data(conn, "users", col, val, id)
+    edit_data(conn, table_name, col, val, id)
 
-def remove_user(conn, id):
-    remove_data(conn, "users", id)
+def remove_user(conn, table_name, id):
+    remove_data(conn, table_name, id)
 
 # --- EVENT FUNCTIONS ---
 
@@ -162,12 +163,20 @@ def check_pw(conn, id, user_pw):
 def user_exists(conn, email):
     c = conn.cursor()
 
-    res = c.execute("SELECT * FROM users WHERE email = (?)", (email, ))
-    res = c.fetchone
+    query = """
+    SELECT * FROM table1 WHERE email = ?
+    UNION
+    SELECT * FROM table2 WHERE email = ?
+    UNION
+    SELECT * FROM table3 WHERE email = ?
+    UNION
+    SELECT * FROM table4 WHERE email = ?
+    """
 
-    if res:
-        return True
-    return False
+    res = c.execute(query, (email, email, email, email))
+    res = c.fetchall()
+
+    return len(res) > 0
 
 def get_user_by_email(conn, email):
     c = conn.cursor()
