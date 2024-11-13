@@ -95,11 +95,9 @@ def read_data(conn, table_name, cols, id):
     c = conn.cursor()
 
     query = f"SELECT {cols} FROM {table_name} WHERE id = (?)"
-    print(query)
-    print(id)
     c.execute(query, (id, ))
 
-    return c.fetchone
+    return c.fetchone()
 
 def edit_data(conn, table_name, col, val, id):
     c = conn.cursor()
@@ -121,10 +119,10 @@ def remove_data(conn, table_name, id):
 # --- USER FUNCTIONS ---
 
 def create_user(conn, data):
-    print(data[2])
-    data[2] = gen_pw(data[2])
-    print(data[2])
-    add_data(conn, "unvalidated_users", ['email', 'username', 'password'], data)
+    print(data)
+    data[1] = gen_pw(data[1])
+    print(data[1])
+    add_data(conn, "unvalidated_users", ['email', 'password', 'name'], data)
 
 def read_user(conn, table_name, cols, id):
     data = read_data(conn, table_name, cols, id)
@@ -152,11 +150,13 @@ def gen_pw(pw):
 
     return hash_pw
 
-def check_pw(conn, id, user_pw):
-    hash_pw = read_user(conn, "password", id)
+def check_pw(conn, table_name, id, user_pw):
+    hash_pw = read_user(conn, table_name, "password", id)
+    print(f"pw: {hash_pw}")
 
     bytes = user_pw.encode('utf-8')
-    res = bcrypt.checkpw(bytes, hash_pw)
+    print(bytes)
+    res = bcrypt.checkpw(bytes, hash_pw[0])
 
     return res
 
@@ -164,13 +164,13 @@ def user_exists(conn, email):
     c = conn.cursor()
 
     query = """
-    SELECT * FROM table1 WHERE email = ?
+    SELECT id FROM students WHERE email = ?
     UNION
-    SELECT * FROM table2 WHERE email = ?
+    SELECT id FROM staff WHERE email = ?
     UNION
-    SELECT * FROM table3 WHERE email = ?
+    SELECT id FROM parents WHERE email = ?
     UNION
-    SELECT * FROM table4 WHERE email = ?
+    SELECT id FROM unvalidated_users WHERE email = ?
     """
 
     res = c.execute(query, (email, email, email, email))
@@ -181,8 +181,16 @@ def user_exists(conn, email):
 def get_user_by_email(conn, email):
     c = conn.cursor()
 
-    c.execute("SELECT * FROM users WHERE email = ()", (email, ))
-    return c.fetchone
+    tables = ["students", "staff", "parents", "unvalidated_users"]
+    for i in tables:
+        query = f"SELECT * FROM {i} WHERE email = ?"
+        res = c.execute(query, (email, ))
+        user = res.fetchone()
+        if user:
+            if len(user) > 0:
+                break
+
+    return user, i
 
 
 

@@ -5,6 +5,13 @@ CORS(app)
 
 db_path = "./instance/db.db"
 
+# ! switch to env method before deployment
+# PORT = os.getenv('PORT')
+# SECRET_KEY = os.getenv('SECRET_KEY')
+PORT = 5000 
+SECRET_KEY = 'secret'
+app.secret_key = SECRET_KEY
+
 # -- ROUTES ---
 
 @app.route('/')
@@ -18,13 +25,12 @@ def signup():
         return jsonify({"error": "already signed in"}, 400)
     if request.method == 'POST':
         data = request.get_json()
-        email = data['email']
-        name = data['full_name']
-        pw = data['pw']
+        email = data['email']   
+        name = data['full-name']
+        pw = data['password']
 
         with db.connect(db_path) as conn:
             db.create_user(conn, [email, pw, name])
-            print("user created")
 
         return jsonify({"message": "user created successfully"}), 200
     return send_from_directory(app.static_folder, 'index.html')
@@ -37,12 +43,14 @@ def login():
         data = request.get_json()
     
         with db.connect(db_path) as conn:
-            check = db.user_exists(conn, data[0])
+            check = db.user_exists(conn, data['email'])
         
             if check:
-                user = db.get_user_by_email(conn, data[0])
-                if db.check_pw(conn, user[0], data[1]):
+                user, table_name = db.get_user_by_email(conn, data['email'])
+                if db.check_pw(conn, table_name, user[0], data['password']):
                     print("correct pw")
+                    session.permanent = True
+                    app.permanent_session_lifetime = timedelta(minutes=30)
                     session['user_id'] = user[0]
                     session['email'] = user[1]
                     session['name'] = user[3]
@@ -61,4 +69,4 @@ with db.connect(db_path) as conn:
     db.default_admin(conn)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=PORT, debug=True)

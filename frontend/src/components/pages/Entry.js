@@ -5,12 +5,18 @@ import RegisterForm from '../layout/Register';
 import LoginForm from "../layout/Login";
 import Footer from '../layout/Footer';
 
-export default function Entry() {
-    const [isLoginFormVisible, setIsLoginFormVisible] = useState(true)
+const authCheck = () => {
+    const cookies = document.cookie.split(';');
+    return cookies.some(cookie => cookie.startsWith('loggedIn='));
+};
 
-    useEffect(() => {
-        setIsLoginFormVisible(true)
-    }, [])
+export default function Entry() {
+    const check = authCheck()
+    if (check) {
+        window.location.href = '/'
+    }
+
+    const [isLoginFormVisible, setIsLoginFormVisible] = useState(true)
 
     if (document.getElementById('login-container')) {
         if (isLoginFormVisible) {
