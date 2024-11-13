@@ -152,10 +152,8 @@ def gen_pw(pw):
 
 def check_pw(conn, table_name, id, user_pw):
     hash_pw = read_user(conn, table_name, "password", id)
-    print(f"pw: {hash_pw}")
 
     bytes = user_pw.encode('utf-8')
-    print(bytes)
     res = bcrypt.checkpw(bytes, hash_pw[0])
 
     return res

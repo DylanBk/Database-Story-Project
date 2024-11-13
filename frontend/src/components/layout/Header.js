@@ -5,7 +5,21 @@ const burger_menu_black = require('../../media/icons/burger-menu-black.png');
 const burger_menu_white = require('../../media/icons/burger-menu-white.png');
 const spyglass = require('../../media/icons/spyglass.png');
 
+const authCheck = () => {
+    const cookies = document.cookie.split(';');
+    return cookies.some(cookie => cookie.startsWith('userSession'));
+}
+
 export default function Header() {
+    const check = authCheck()
+    if (check && document.getElementById('login-btn')) {
+        console.log('hidden login btn')
+        document.getElementById('login-btn').style.visibility = 'hidden';
+    } else {
+        console.log("no cookie")
+    }
+
+
     const [isAuthPage, setIsAuthPage] = useState(false)
     const [isWideScreen, setIsWideScreen] = useState(window.screen.width > 768);
 
@@ -23,10 +37,13 @@ export default function Header() {
         };
     }, []);
 
-    if (isAuthPage || document.getElementById('login-btn')) {
+    if (isAuthPage && isWideScreen && document.getElementById('login-btn')) {
         document.getElementById('login-btn').style.transition = 'none';
         document.getElementById('login-btn').style.visibility = 'hidden';
         document.getElementById('nav').style.right = '4rem';
+    } else if (isAuthPage && document.getElementById('login-btn-mobile')) {
+        document.getElementById('login-btn-mobile').style.transition = 'none';
+        document.getElementById('login-btn-mobile').style.visibility = 'none';
     }
 
     return (
@@ -80,8 +97,7 @@ export default function Header() {
                     </div>
                 ) : (
                     <button
-                        className="w-8 absolute left-4 top-1/2 text-center -translate-y-1/2"
-                        onClick={''}>
+                        className="w-8 absolute left-4 top-1/2 text-center -translate-y-1/2">
                             <picture>
                                 <source srcSet={burger_menu_black} media="prefers-color-scheme: light"></source>
                                 <source srcSet={burger_menu_white} media="prefers-color-scheme: dark"></source>
@@ -90,11 +106,11 @@ export default function Header() {
                     </button>
                 )} 
                 <Link
-                    id="login-btn"
+                    id="login-btn-mobile"
                     className="h-10 absolute right-4 bottom-4 px-2 py-1 sm:px-4 sm:py-2 rounded-md primary-btn"
                     to="/login">
-                        Login
-                    </Link>
+                    Login
+                </Link>
         </div>
     )
 };

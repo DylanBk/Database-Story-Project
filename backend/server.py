@@ -12,6 +12,7 @@ PORT = 5000
 SECRET_KEY = 'secret'
 app.secret_key = SECRET_KEY
 
+
 # -- ROUTES ---
 
 @app.route('/')
@@ -48,7 +49,6 @@ def login():
             if check:
                 user, table_name = db.get_user_by_email(conn, data['email'])
                 if db.check_pw(conn, table_name, user[0], data['password']):
-                    print("correct pw")
                     session.permanent = True
                     app.permanent_session_lifetime = timedelta(minutes=30)
                     session['user_id'] = user[0]
@@ -56,7 +56,8 @@ def login():
                     session['name'] = user[3]
                     session['role'] = user[4]
 
-                return jsonify({"message": "signed in successfully"}), 200
+                    return jsonify({"message": "signed in successfully"}), 200
+                return jsonify({"error": "password incorrect"}), 400
             return jsonify({"error": "user does not exist"}), 400
     return send_from_directory(app.static_folder, 'index.html')
 

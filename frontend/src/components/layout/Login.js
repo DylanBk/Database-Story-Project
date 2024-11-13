@@ -37,11 +37,14 @@ export default function LoginForm() {
             const json = await response.json()
             if (response.ok) {
                 console.log(json.message)
-                document.cookie = "userSession; max-age=1800";
+                window.location.href = '/'
+                document.cookie = "userSession=True; max-age=1800";
             } else {
                 console.error(json.error)
-                if (json.error == "user does not exist") {
+                if (json.error === "user does not exist") {
                     setErrorMessage("A user with that email does not exist")
+                } else if (json.error === "password incorrect") {
+                    setErrorMessage("Incorrect password, please try again")
                 }
             }
         } catch (error) {

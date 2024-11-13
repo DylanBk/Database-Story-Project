@@ -7,12 +7,13 @@ import Footer from '../layout/Footer';
 
 const authCheck = () => {
     const cookies = document.cookie.split(';');
-    return cookies.some(cookie => cookie.startsWith('loggedIn='));
+    return cookies.some(cookie => cookie.startsWith('userSession='));
 };
 
 export default function Entry() {
     const check = authCheck()
     if (check) {
+        console.log('auth check')
         window.location.href = '/'
     }
 
@@ -36,8 +37,6 @@ export default function Entry() {
             document.getElementById('hide-login-form').style.visibility = 'visible';
             document.getElementById('show-login-form').style.visibility = 'hidden';
         }
-    } else {
-        console.log('no form loaded')
     }
 
     return (
