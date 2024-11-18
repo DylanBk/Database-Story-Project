@@ -17,7 +17,7 @@ export default function App() {
       <Route path='/login' element={<Entry />} />
       <Route path='/admin' element={<Dashboard />} />
       <Route path='/dashboard' element={<Dashboard />} />
-      <Route path='*' element={<Error404 />} />
+      <Route path='/*' element={<Error404 />} />
     </Routes>
   )
 };

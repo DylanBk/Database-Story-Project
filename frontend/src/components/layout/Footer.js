@@ -5,7 +5,7 @@ export default function Footer() {
     const [isFooterAbsolute, setIsFooterAbsolute] = useState(false)
 
     useEffect(() => {
-        if (window.location.href.includes('login')) {
+        if (window.location.href.includes('login') || window.location.href.includes('404')) {
             setIsFooterAbsolute(true)
         }
     }, []);

@@ -156,3 +156,21 @@ input:-webkit-autofill:active {
   text-decoration-line: underline;
   outline: none;
 }
+
+
+.sidebar-section {
+  position: relative;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  font-size: larger;
+  transform: translateX(-25%);
+}
+
+.sidebar-option {
+  width: 50%;
+  color: white;
+  text-align: left;
+  font-size: large;
+}

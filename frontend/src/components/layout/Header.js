@@ -7,17 +7,27 @@ const spyglass = require('../../media/icons/spyglass.png');
 
 const authCheck = () => {
     const cookies = document.cookie.split(';');
-    return cookies.some(cookie => cookie.startsWith('userSession'));
+    console.log(cookies)
+    return cookies.some(cookie => cookie.startsWith('userSession=True'));
 }
 
 export default function Header() {
-    const check = authCheck()
-    if (check && document.getElementById('login-btn')) {
-        console.log('hidden login btn')
-        document.getElementById('login-btn').style.visibility = 'hidden';
-    } else {
-        console.log("no cookie")
-    }
+
+    useEffect(() => {
+        const check = authCheck()
+
+        if (check) {
+            if (document.getElementById('login-btn')) {
+                console.log('hidden login btn')
+                document.getElementById('login-btn').style.transition = 'none'
+                document.getElementById('login-btn').style.visibility = 'hidden';
+            } else {
+                console.log("no button")
+            }
+        } else {
+            console.log("no cookie")
+        }
+    })
 
 
     const [isAuthPage, setIsAuthPage] = useState(false)
@@ -106,7 +116,7 @@ export default function Header() {
                     </button>
                 )} 
                 <Link
-                    id="login-btn-mobile"
+                    id="login-btn"
                     className="h-10 absolute right-4 bottom-4 px-2 py-1 sm:px-4 sm:py-2 rounded-md primary-btn"
                     to="/login">
                     Login

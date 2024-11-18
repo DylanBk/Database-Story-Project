@@ -39,6 +39,9 @@ export default function RegisterForm() {
 
             if (response.ok) {
                 console.log(json.message)
+                if (json.message === "already signed in") {
+                    window.location.href = '/login'
+                }
             } else {
                 console.error(json.error)
             }

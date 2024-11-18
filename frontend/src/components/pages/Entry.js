@@ -19,6 +19,14 @@ export default function Entry() {
 
     const [isLoginFormVisible, setIsLoginFormVisible] = useState(true)
 
+    useEffect(() => {
+        if (window.location.href.includes('/signup')) {
+            setIsLoginFormVisible(false)
+        } else {
+            setIsLoginFormVisible(true)
+        }
+    }, [])
+
     if (document.getElementById('login-container')) {
         if (isLoginFormVisible) {
             console.log(isLoginFormVisible)

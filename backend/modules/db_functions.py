@@ -119,9 +119,7 @@ def remove_data(conn, table_name, id):
 # --- USER FUNCTIONS ---
 
 def create_user(conn, data):
-    print(data)
     data[1] = gen_pw(data[1])
-    print(data[1])
     add_data(conn, "unvalidated_users", ['email', 'password', 'name'], data)
 
 def read_user(conn, table_name, cols, id):
